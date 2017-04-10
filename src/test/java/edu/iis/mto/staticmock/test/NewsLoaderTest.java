@@ -19,6 +19,9 @@ import edu.iis.mto.staticmock.PublishableNews;
 import edu.iis.mto.staticmock.SubsciptionType;
 import edu.iis.mto.staticmock.reader.NewsReader;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class NewsLoaderTest {
 	private Configuration testConfiguration = null;
 	private List<String> exampleList = null;
 	private String readerExample = "AB";
+	private NewsReader newsReader;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -53,7 +57,7 @@ public class NewsLoaderTest {
 		incomingNews.add(new IncomingInfo("subA", SubsciptionType.A));
 		incomingNews.add(new IncomingInfo("subB", SubsciptionType.B));
 		incomingNews.add(new IncomingInfo("subC", SubsciptionType.C));
-		NewsReader newsReader = new NewsReader() {
+		newsReader = new NewsReader() {
 
 			@Override
 			public IncomingNews read() {
@@ -98,5 +102,15 @@ public class NewsLoaderTest {
 				this.subscribentContent.add(content);
 			}
 		};
+	}
+	
+	@Test
+	public void testIfReadIsCalledOnce() {
+		
+		NewsLoader newsLoader = new NewsLoader();
+		newsLoader.loadNews();
+		
+		verifyStatic(times(1));
+		NewsReaderFactory.getReader(readerExample);
 	}
 }
