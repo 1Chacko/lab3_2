@@ -13,8 +13,12 @@ import edu.iis.mto.staticmock.Configuration;
 import edu.iis.mto.staticmock.ConfigurationLoader;
 import edu.iis.mto.staticmock.NewsReaderFactory;
 import edu.iis.mto.staticmock.PublishableNews;
+import edu.iis.mto.staticmock.SubsciptionType;
 
 import static org.powermock.api.mockito.PowerMockito.*;
+
+import java.util.List;
+
 import org.mockito.internal.util.reflection.*;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -24,6 +28,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class NewsLoaderTest {
 	
 	private ConfigurationLoader testConfigurationLoader = null;
+	private List<String> exampleList = null;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -37,8 +42,12 @@ public class NewsLoaderTest {
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testIfPublicNewsIsAddedCorrectly() {
+		PublishableNews publishNews = PublishableNews.create();
+		publishNews.addPublicInfo("pub");
+		exampleList = (List<String>) Whitebox.getInternalState(publishNews, "publicContent");
+		assertThat(exampleList.size(), is(not(equalTo(0))));
+		assertThat(exampleList.get(0), is(equalTo("pub")));
 	}
 
 }
