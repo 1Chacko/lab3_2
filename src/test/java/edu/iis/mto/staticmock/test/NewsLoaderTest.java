@@ -69,5 +69,15 @@ public class NewsLoaderTest {
 		assertThat(exampleList.size(), is(not(equalTo(0))));
 		assertThat(exampleList.get(0), is(equalTo("pub")));
 	}
-
+	
+	private PublishableNews getMockOfPublishableNews() {
+		return new PublishableNews() {
+			private final List<String> subscribentContent = new ArrayList<>();
+			
+			@Override
+			public void addForSubscription(String content, SubsciptionType subscriptionType) {
+				this.subscribentContent.add(content);
+			}
+		};
+	}
 }
